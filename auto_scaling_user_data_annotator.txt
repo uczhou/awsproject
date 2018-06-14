@@ -1,0 +1,9 @@
+#! /bin/bash -ex
+cd /home/ubuntu/anntools
+wget https://s3.amazonaws.com/mpcs-students/hongleizhou/gas_annotator.zip
+unzip -o gas_annotator.zip
+rm gas_annotator.zip
+mkdir data
+chown -R ubuntu:ubuntu /home/ubuntu/anntools
+chmod +x run_annotator.sh
+sudo -u ubuntu ./run_annotator.sh &

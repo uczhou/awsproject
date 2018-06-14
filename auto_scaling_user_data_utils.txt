@@ -1,0 +1,8 @@
+#! /bin/bash -ex
+cd /home/ubuntu/
+wget https://s3.amazonaws.com/mpcs-students/hongleizhou/gas_utils.zip
+unzip -o gas_utils.zip
+rm gas_utils.zip
+chown -R ubuntu:ubuntu /home/ubuntu/utils
+
+sudo -u ubuntu /home/ubuntu/utils/run_utils.sh &

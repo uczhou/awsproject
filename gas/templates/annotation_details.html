@@ -1,0 +1,54 @@
+<!--
+annotations.html - Display a list of user annotation jobs with links to details for each job
+Copyright (C) 2011-2018 Vas Vasiliadis <vas@uchicago.edu>
+University of Chicago
+-->
+{% extends "base.html" %}
+{% block title %}Annotation Details{% endblock %}
+{% block body %}
+  {% include "header.html" %}
+  <div class="container">
+    <div class="page-header">
+      <h1>Annotation Details</h1>
+    </div>
+
+    <div class="row text-right">
+      <a href="{{ url_for('annotate') }}" title="Request New Annotation">
+        <button type="button" class="btn btn-link" aria-label="Request New Annotation">
+          <i class="fa fa-plus fa-lg"></i> Request New Annotation
+        </button>
+      </a>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        {% if annotations %}
+             <!-- ref: https://www.w3schools.com/html/html_lists.asp -->
+            <ul>
+                <li><b>Request ID:</b> {{ annotations.job_id }}</li>
+                <li><b>Request Time:</b> {{ annotations.submit_time }}</li>
+                <li><b>VCF Input File:</b> {{ annotations.input_file_name }}</li>
+                <li><b>Status:</b> {{ annotations.job_status }}</li>
+                <li><b>Complete Time:</b> {{ annotations.complete_time }}</li>
+            </ul>
+            {% if annotations.job_status == "COMPLETED"  %}
+            <ul>
+                {% if annotations.result_url %}
+                    <li><b>Annotated Results File:</b> <a href="{{ annotations.result_url }}">download</a></li>
+                {% elif session['role'] == "premium_user" %}
+                    <li>We are restoring your data. Please check back again after 24hrs.</li>
+                    <li><b>Annotated Results File:</b> download</li>
+                {% else %}
+                    <li><b>Annotated Results File:</b> <a href="{{ url_for('subscribe') }}">upgrade to Premium for download</a></li>
+                {% endif %}
+                <li><b>Annotation Log File:</b> <a href="{{ annotations.log_url }}">view</a></li>
+            </ul>
+            {% endif %}
+        {% else %}
+            <p><b>No annotations found.</b></p>
+        {% endif %}
+        <a href="{{ url_for('annotations_list') }}">&larr; back to annotations list</a>
+      </div>
+    </div>
+  </div> <!-- container -->
+{% endblock %}
